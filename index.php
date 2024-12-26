@@ -1,42 +1,32 @@
 <?php
+include 'includes/header.php';
 include 'includes/db.php';
 
+// Consulta para obtener los alojamientos
 $query = "SELECT * FROM accommodations";
 $result = $conn->query($query);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<?php include 'includes/header.php'; ?>
-
 <div class="container mt-5">
-    <h1 class="text-center">Alojamientos Disponibles</h1>
+    <h1 class="text-center mb-4">Bienvenidos a Accommodations App</h1>
+    <p class="text-center">Explora nuestros alojamientos y encuentra el lugar perfecto para tu próxima estancia.</p>
     <div class="row">
         <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="<?php echo $row['image_url']; ?>" class="card-img-top" alt="<?php echo $row['name']; ?>">
+                <div class="card shadow-sm mb-4">
+                    <img src="<?php echo $row['image_url']; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['name']); ?>">
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo $row['name']; ?></h5>
-                        <p class="card-text"><?php echo $row['description']; ?></p>
-                        <p class="card-text"><strong>Precio: $<?php echo $row['price']; ?></strong></p>
+                        <h5 class="card-title"><?php echo htmlspecialchars($row['name']); ?></h5>
+                        <p class="card-text"><?php echo htmlspecialchars($row['description']); ?></p>
+                        <p class="card-text"><strong>Precio: $<?php echo number_format($row['price'], 2); ?></strong></p>
+                        <a href="#" class="btn btn-primary w-100">Reservar Ahora</a>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><?php echo $row['name']; ?></h5>
-                <p class="card-text"><?php echo $row['description']; ?></p>
-                <p class="card-text"><strong>Precio: $<?php echo $row['price']; ?></strong></p>
-                
-                <!-- Botón para eliminar el alojamiento -->
-                <form method="POST" style="display: inline;">
-                    <input type="hidden" name="id_accommodation" value="<?php echo $row['id_accommodation']; ?>">
-                    <button type="submit" name="delete" class="btn btn-danger">Eliminar</button>
-                </form>
             </div>
         <?php endwhile; ?>
     </div>
 </div>
 
-<?php include 'includes/footer.php'; ?>
-</html>
+<?php
+include 'includes/footer.php';
+?>
